@@ -119,9 +119,32 @@ hanger = [
 def updatePrompt(word):
 	word_length = len(word)
 	print(word_length)
+	word = word.upper()
+
+	for i in range(word_length+1):
+		if i == 0:
+			print("┌─",end="")
+		elif i != word_length:
+			print("┬─",end="")
+		else:
+			print("┐")
+
+	for j in range(word_length):
+		if j != word_length-1:
+			print("│"+word[j],end="")
+		else:
+			print("│"+word[j]+"│")
+
+	for i in range(word_length+1):
+		if i == 0:
+			print("└─",end="")
+		elif i != word_length:
+			print("┴─",end="")
+		else:
+			print("┘")
 
 
-updatePrompt("business")
+updatePrompt("aaron")
 
 # ┌─┬─┬─┬─┬─┬─┬─┐
 # │_│_│_│_│_│_│_│
