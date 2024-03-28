@@ -1,8 +1,10 @@
+import os
+
 
 hanger = [
 """
 ┌┬──────┐
-││      │
+││      
 ││
 ││ 
 ││
@@ -13,13 +15,13 @@ hanger = [
 ││
 ││
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
-││      │
-││    ╭─┴─╮
+││      
+││    ╭───╮
 ││    │•_•│
-││    ╰─┬─╯
+││    ╰───╯
 ││
 ││ 
 ││
@@ -27,53 +29,67 @@ hanger = [
 ││
 ││     
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
-││      │
-││    ╭─┴─╮
+││      
+││    ╭───╮
 ││    │•_•│
 ││    ╰─┬─╯
 ││      ┼
-││      │
-││      ┴ 
+││      
+││       
 ││
 ││
 ││
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
-││      │
-││    ╭─┴─╮
+││      
+││    ╭───╮
 ││    │•_•│
 ││    ╰─┬─╯
 ││     ╭┼
-││     ││
-││      ┴ 
+││     │
+││       
 ││
 ││
 ││
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
-││      │
-││    ╭─┴─╮
+││      
+││    ╭───╮
+││    │•_•│
+││    ╰─┬─╯
+││     ╭┼╮
+││     │ │
+││       
+││
+││
+││
+╧╧═══════════ 
+""",
+"""
+┌┬──────┐
+││      
+││    ╭───╮
 ││    │•_•│
 ││    ╰─┬─╯
 ││     ╭┼╮
 ││     │││
 ││      ┴ 
-││
+││     
 ││
 ││
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
-││      │
-││    ╭─┴─╮
+││      
+││    ╭───╮
 ││    │•_•│
 ││    ╰─┬─╯
 ││     ╭┼╮
@@ -83,7 +99,21 @@ hanger = [
 ││
 ││
 ╧╧═══════════ 
+""",
 """
+┌┬──────┐
+││      
+││    ╭───╮
+││    │•_•│
+││    ╰─┬─╯
+││     ╭┼╮
+││     │││
+││     ╭┴╮ 
+││     │ │
+││
+││
+╧╧═══════════ 
+""",
 """
 ┌┬──────┐
 ││      │
@@ -97,7 +127,7 @@ hanger = [
 ││
 ││
 ╧╧═══════════ 
-"""
+""",
 """
 ┌┬──────┐
 ││      │
@@ -113,13 +143,11 @@ hanger = [
 ╧╧═══════════ 
 """
 ]
-# print(hanger[0])
+
 
 
 def updatePrompt(word):
 	word_length = len(word)
-	print(word_length)
-	word = word.upper()
 
 	for i in range(word_length+1):
 		if i == 0:
@@ -144,48 +172,65 @@ def updatePrompt(word):
 			print("┘")
 
 
-updatePrompt("aaron")
 
-# ┌─┬─┬─┬─┬─┬─┬─┐
-# │_│_│_│_│_│_│_│
-# └─┴─┴─┴─┴─┴─┴─┘
-# ┌─┬─┬─┬─┬─┬─┬─┐
-# │A│A│A│A│A│A│A│
-# └─┴─┴─┴─┴─┴─┴─┘
+def menu():
+	print("[1] Play Hangman")
+	print("[2] Exit")
+	print("What do you want to do? ")
+	choice = input()
 
-# ┤┤
-
-# ┼ ┼
-
-# ┴┴
-
-# └ ┘
+	return choice
 
 
+def play(word, secret):
+	# os.system('cls' if os.name == 'nt' else 'clear')
+	chance = 0 #max chance is 7
+	letters_guessed = []
+	guess = ""
+
+	while True:
+		if chance == 8:
+			print(hanger[8])
+			print("You loose!")
+			break
+		else:
+			print(hanger[chance])
+			updatePrompt(secret)
+			print("Guess a letter: ",end="")
+			guess = input().upper()
+
+			if guess in letters_guessed:
+				print("You already have guessed that letter!")
+			else:
+				letters_guessed.append(guess)
+				if guess in word:
+					indices = [i for i, x in enumerate(word) if x == guess]
+					for i in indices:
+						secret[i] = guess
+				else:
+					chance = chance + 1
+
+			if "_" not in secret:
+				print(hanger[9])
+				print("You win!")
+				break
+			print(letters_guessed)
+			
 
 
-# def menu():
-# 	print("[0] Play Hangman")
-# 	print("[1] Exit")
-# 	print("What do you want to do? ")
-# 	choice = input()
+while True:
 
-# 	return choice
-
-# def play(word):
-
-# 	while 
-
-# while True:
-
-# 	choice = menu()
-# 	if choice == "0":
-# 		word = ""
-# 		play(word)
-# 	else if choice == "1":
-# 		print("Thanks for playing!")
-# 	else:
-# 		print("Invalid input!")
+	choice = menu()
+	if choice == "1":
+		word = "aaron"
+		secret = ["_"]*len(word)
+		play(word.upper(),secret)
+	elif choice == "2":
+		print("Thanks for playing!")
+		break
+	else:
+		print("Invalid input!")
+	# os.system('cls' if os.name == 'nt' else 'clear')
 
 
 			
