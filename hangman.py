@@ -144,6 +144,14 @@ hanger = [
 """
 ]
 
+title = """
+██╗░░██╗░█████╗░███╗░░██╗░██████╗░███╗░░░███╗░█████╗░███╗░░██╗
+██║░░██║██╔══██╗████╗░██║██╔════╝░████╗░████║██╔══██╗████╗░██║
+███████║███████║██╔██╗██║██║░░██╗░██╔████╔██║███████║██╔██╗██║
+██╔══██║██╔══██║██║╚████║██║░░╚██╗██║╚██╔╝██║██╔══██║██║╚████║
+██║░░██║██║░░██║██║░╚███║╚██████╔╝██║░╚═╝░██║██║░░██║██║░╚███║
+╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░╚═════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝
+"""
 
 
 def updatePrompt(word):
@@ -173,9 +181,15 @@ def updatePrompt(word):
 
 
 
-def menu():
+def menu(p_choice):
+
+	#check prev choice, insert invalid input linining
 	print("[1] Play Hangman")
-	print("[2] Exit")
+	print("[2] Exit\n")
+	if p_choice != "1" and p_choice != "2":
+		print("Invalid Input!", "'"+p_choice+"'","is not a valid option!")
+	else:
+		print()
 	print("What do you want to do? ")
 	choice = input()
 
@@ -222,18 +236,19 @@ def play(word, secret):
 			print("Letters guessed:")
 			print(letters_guessed)
 			
-
-
+prev_choice = ''
 while True:
 
-	choice = menu()
+	print(title)
+	choice = menu(prev_choice)
 	if choice == "1":
 		word = "rizz"
-		secret = ["_"]*len(word)
-		play(word.upper(),secret)
+		# secret = ["_"]*len(word)
+		# play(word.upper(),secret)
 	elif choice == "2":
 		print("Thanks for playing!")
-		break
-	else:
-		print("Invalid input!")
-	# os.system('cls' if os.name == 'nt' else 'clear')
+		# break
+	# else:
+		# print("Invalid input!")
+	prev_choice = choice
+	os.system('cls' if os.name == 'nt' else 'clear')
