@@ -152,7 +152,15 @@ title = """
 ██║░░██║██║░░██║██║░╚███║╚██████╔╝██║░╚═╝░██║██║░░██║██║░╚███║
 ╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░╚═════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝
 """
+winner = """
+█▄█ █▀█ █░█   █░█░█ █ █▄░█ █
+░█░ █▄█ █▄█   ▀▄▀▄▀ █ █░▀█ ▄
+"""
 
+loser = """
+█▄█ █▀█ █░█   █░░ █▀█ █▀ █▀▀ █
+░█░ █▄█ █▄█   █▄▄ █▄█ ▄█ ██▄ ▄
+"""
 
 def updatePrompt(word):
 	word_length = len(word)
@@ -181,15 +189,20 @@ def updatePrompt(word):
 
 
 
-def menu(p_choice):
+def menu(details):
 
 	#check prev choice, insert invalid input linining
+	if details == "Congrats! You did it!":
+		print(hanger[9])
+		print(winner)
+	elif details == "Better luck next time!":
+		print(hanger[8])
+		print(loser)
 	print("[1] Play Hangman")
 	print("[2] Exit\n")
-	if p_choice != "1" and p_choice != "2":
-		print("Invalid Input!", "'"+p_choice+"'","is not a valid option!")
-	else:
-		print()
+
+	print(details)
+
 	print("What do you want to do? ")
 	choice = input()
 
@@ -197,29 +210,39 @@ def menu(p_choice):
 
 
 def play(word, secret):
-	# os.system('cls' if os.name == 'nt' else 'clear')
+
 	chance = 0 #max chance is 7
 	letters_guessed = []
 	guess = ""
+	details = ""
+	prev_guess = word[1]
 
 	while True:
+		os.system('cls' if os.name == 'nt' else 'clear')
+		print(title)
+		
 		if chance == 8:
-			print(hanger[8])
-			print("You loose!")
-			break
+			return "Better luck next time!"
 
 		else:
 			print(hanger[chance])
 			updatePrompt(secret)
-			print("Guess a letter: ",end="")
+
+			print("\nLetters guessed:")
+			print(letters_guessed)
+
+			print(details)
+
+			print("\n\nGuess a letter: ",end="")
 			guess = input().upper()
-			print("\n======================")
+			prev_guess = guess
+			
 
 			if len(guess) > 1 or not guess.isalpha():
-				print("Invalid input!")
+				details = "Please only enter a single letter character!"
 			else:
 				if guess in letters_guessed:
-					print("You already have guessed that letter!")
+					details = "You already have guessed letter " + guess +"!"
 				else:
 					letters_guessed.append(guess)
 					if guess in word:
@@ -228,27 +251,24 @@ def play(word, secret):
 							secret[i] = guess
 					else:
 						chance = chance + 1
+					details = ""
 
 				if "_" not in secret:
-					print(hanger[9])
-					print("You win!")
-					break
-			print("Letters guessed:")
-			print(letters_guessed)
+					return "Congrats! You did it!"
 			
-prev_choice = ''
+details = ""
 while True:
-
+	os.system('cls' if os.name == 'nt' else 'clear')
 	print(title)
-	choice = menu(prev_choice)
+	choice = menu(details)
 	if choice == "1":
-		word = "rizz"
-		# secret = ["_"]*len(word)
-		# play(word.upper(),secret)
+		word = "sparrow"
+		secret = ["_"]*len(word)
+		details = play(word.upper(),secret)
+
 	elif choice == "2":
 		print("Thanks for playing!")
-		# break
-	# else:
-		# print("Invalid input!")
-	prev_choice = choice
-	os.system('cls' if os.name == 'nt' else 'clear')
+		break
+	else:
+		details = "Invalid Input!"
+
