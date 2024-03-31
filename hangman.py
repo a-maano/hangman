@@ -1,166 +1,6 @@
 import os
+import assets as a
 
-
-hanger = [
-"""
-┌┬──────┐
-││      
-││
-││ 
-││
-││
-││
-││
-││
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰───╯
-││
-││ 
-││
-││
-││
-││     
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││      ┼
-││      
-││       
-││
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││     ╭┼
-││     │
-││       
-││
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │ │
-││       
-││
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │││
-││      ┴ 
-││     
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │││
-││     ╭┴ 
-││     │ 
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      
-││    ╭───╮
-││    │•_•│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │││
-││     ╭┴╮ 
-││     │ │
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      │
-││    ╭─┴─╮
-││    │x_x│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │││
-││     ╭┴╮ 
-││     │ │
-││
-││
-╧╧═══════════ 
-""",
-"""
-┌┬──────┐
-││      │
-││
-││
-││    ╭───╮
-││    │•‿•│
-││    ╰─┬─╯
-││     ╭┼╮
-││     │││
-││     ╭┴╮ 
-││     │ │
-╧╧═══════════ 
-"""
-]
-
-title = """
-██╗░░██╗░█████╗░███╗░░██╗░██████╗░███╗░░░███╗░█████╗░███╗░░██╗
-██║░░██║██╔══██╗████╗░██║██╔════╝░████╗░████║██╔══██╗████╗░██║
-███████║███████║██╔██╗██║██║░░██╗░██╔████╔██║███████║██╔██╗██║
-██╔══██║██╔══██║██║╚████║██║░░╚██╗██║╚██╔╝██║██╔══██║██║╚████║
-██║░░██║██║░░██║██║░╚███║╚██████╔╝██║░╚═╝░██║██║░░██║██║░╚███║
-╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝░╚═════╝░╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝
-"""
-winner = """
-█▄█ █▀█ █░█   █░█░█ █ █▄░█ █
-░█░ █▄█ █▄█   ▀▄▀▄▀ █ █░▀█ ▄
-"""
-
-loser = """
-█▄█ █▀█ █░█   █░░ █▀█ █▀ █▀▀ █
-░█░ █▄█ █▄█   █▄▄ █▄█ ▄█ ██▄ ▄
-"""
 
 def updatePrompt(word):
 	word_length = len(word)
@@ -193,11 +33,11 @@ def menu(details):
 
 	#check prev choice, insert invalid input linining
 	if details == "Congrats! You did it!":
-		print(hanger[9])
-		print(winner)
+		print(a.hanger[9])
+		print(a.winner)
 	elif details == "Better luck next time!":
-		print(hanger[8])
-		print(loser)
+		print(a.hanger[8])
+		print(a.loser)
 	print("[1] Play Hangman")
 	print("[2] Exit\n")
 
@@ -207,6 +47,13 @@ def menu(details):
 	choice = input()
 
 	return choice
+
+def updateLetters(secret, word, letter):
+	indices = [i for i, x in enumerate(word) if x == letter]
+	for i in indices:
+		secret[i] = letter
+
+	return secret
 
 
 def play(word, secret):
@@ -219,13 +66,13 @@ def play(word, secret):
 
 	while True:
 		os.system('cls' if os.name == 'nt' else 'clear')
-		print(title)
+		print(a.title)
 		
 		if chance == 8:
 			return "Better luck next time!"
 
 		else:
-			print(hanger[chance])
+			print(a.hanger[chance])
 			updatePrompt(secret)
 
 			print("\nLetters guessed:")
@@ -246,24 +93,24 @@ def play(word, secret):
 				else:
 					letters_guessed.append(guess)
 					if guess in word:
-						indices = [i for i, x in enumerate(word) if x == guess]
-						for i in indices:
-							secret[i] = guess
+						secret = updateLetters(secret, word, guess)
 					else:
 						chance = chance + 1
 					details = ""
 
 				if "_" not in secret:
 					return "Congrats! You did it!"
-			
+
+
 details = ""
 while True:
 	os.system('cls' if os.name == 'nt' else 'clear')
-	print(title)
+	print(a.title)
 	choice = menu(details)
 	if choice == "1":
-		word = "sparrow"
+		word = "meat balls"
 		secret = ["_"]*len(word)
+		secret = updateLetters(secret, word, " ")
 		details = play(word.upper(),secret)
 
 	elif choice == "2":
