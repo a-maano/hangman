@@ -2,6 +2,7 @@ import os
 import assets as a
 
 
+
 def updatePrompt(word):
 	word_length = len(word)
 
@@ -27,11 +28,7 @@ def updatePrompt(word):
 		else:
 			print("┘")
 
-
-
 def menu(details):
-
-	#check prev choice, insert invalid input linining
 	if details == "Congrats! You did it!":
 		print(a.hanger[9])
 		print(a.winner)
@@ -55,6 +52,8 @@ def updateLetters(secret, word, letter):
 
 	return secret
 
+def resizeTerminal(row,col):
+	print('\x1b[8;{0};{1}t'.format(row, col), end='', flush=True)
 
 def play(word, secret):
 
@@ -103,6 +102,7 @@ def play(word, secret):
 
 
 details = ""
+resizeTerminal(32,62) #row, col
 while True:
 	os.system('cls' if os.name == 'nt' else 'clear')
 	print(a.title)
